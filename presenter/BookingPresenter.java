@@ -41,7 +41,7 @@ public class BookingPresenter {
                 
             // Option for when the Display All Bookings button is pressed    
             case 2: 
-                header = String.format("BookingID      Name\t\t   Phone\t  Diners\t Day\n");
+                header = String.format("BookingID      Name\t\t   Phone\t  Diners\t Day\t\t Table\n");
                 view.appendOutputDisplay(header);
                 for(int i = 0; results.size() > i; i++) {
                     Object line = results.get(i);
@@ -51,7 +51,7 @@ public class BookingPresenter {
             
             // Option for when the Bookings for Day button is pressed    
             case 3: 
-                header = String.format("BookingID      Name\t\t   Phone\t  Diners\t Day\n");
+                header = String.format("BookingID      Name\t\t   Phone\t  Diners\t Day\t\t Table\n");
                 view.appendOutputDisplay(header);
                 for(int i = 0; results.size() > i; i++) {
                     Object line = results.get(i);
@@ -164,11 +164,39 @@ public class BookingPresenter {
                 else {
                     
                     int capacity = queries.getRestaurantCapacity(view.getDayInput());
+                    int diners = Integer.parseInt(view.getDinersInput());
                     System.out.println(capacity);
-                    total = queries.getTotalDinersForDay(view.getDayInput());
                     
-                    if (total + Integer.parseInt(view.getDinersInput()) <= capacity) {
+                    if (diners > capacity) {
+                        // Error - not enough space for this many diners. Suggest to choose another day.
+                    }
+                    
+                    else {
+                        int seats;
                         
+                        for(int i = 0; tableResults.size() > i; i++) {
+                            Table table = tableResults.get(i);
+                            seats = table.getSeats();
+                            int seatedDiners;
+                            if (diners > seats) {
+                                seatedDiners = seats;
+                            }
+                            
+                            else {
+                                seatedDiners = diners;
+                            }
+                            
+                            queries.addBooking(view.getNameInput(), view.getPhoneInput(), 
+                                              seatedDiners, view.getDayInput(), table.getID());
+                            
+                            diners = diners - seats;
+                            
+                            if (diners <= 0 ) {
+                                option = 1;
+                                updateOutputDisplay();
+                                break;
+                            }
+                        }
                     }
                 }
                 

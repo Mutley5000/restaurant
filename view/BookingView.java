@@ -66,7 +66,7 @@ public class BookingView extends JFrame implements IBookingView {
 		}
         
         // Window dimensions
-	int FRAME_WIDTH = 900;
+	int FRAME_WIDTH = 1000;
 	int FRAME_HEIGHT = 300; 
         
         

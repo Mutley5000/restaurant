@@ -8,15 +8,17 @@ public class Booking {
     String phone;
     int diners = 0;
     String day;
+    int table;
     
     // Constructor
-    public Booking( int id, String name, String phone, int diners, String day ) {
+    public Booking( int id, String name, String phone, int diners, String day, int table ) {
         
         this.id = id;
         this.name = name;
         this.phone = phone;
         this.diners = diners;
         this.day = day;
+        this.table = table;
     }
 
     // Set and get methods for variables
@@ -60,9 +62,17 @@ public class Booking {
         this.day = day;
     }
     
+    public int getTable() {
+        return table;
+    }
+
+    public void setTable(int table) {
+        this.table = table;
+    }
+    
     // Specifying modifications to toString method
     @Override
     public String toString() {
-        return String.format("%-15s%-20s%-15s%-15s%-10s\n",id, name,phone, diners,day);
+        return String.format("%-15s%-20s%-15s%-15s%-16s%-2s\n", id, name, phone, diners, day, table);
     }
 }

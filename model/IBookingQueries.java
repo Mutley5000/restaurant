@@ -3,7 +3,7 @@ package restaurant.model;
 import java.util.LinkedList;
 
 public interface IBookingQueries {
-    void addBooking(String name, String phone, int diners, String day);
+    void addBooking(String name, String phone, int diners, String day, int table);
     void close();
     LinkedList< Booking > getAllBookings();
     LinkedList< Booking > getBookingsForDay(String day);

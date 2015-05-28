@@ -22,10 +22,10 @@ public class BookingQueries implements IBookingQueries {
     private int capacity = 20;
     
     // Declare SQL statements
-    String insertNewBookingSQL = "INSERT INTO BOOKINGS(LASTNAME, PHONE, DINERS, DAYOFWEEK) VALUES(?,?,?,?)";
-    String selectAllBookingsSQL =  "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK " +
+    String insertNewBookingSQL = "INSERT INTO BOOKINGS(LASTNAME, PHONE, DINERS, DAYOFWEEK, TABLEID) VALUES(?,?,?,?,?)";
+    String selectAllBookingsSQL =  "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK, TABLEID " +
                                 "FROM BOOKINGS";
-    String selectBookingDaySQL =   "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK FROM BOOKINGS WHERE DAYOFWEEK = ?";
+    String selectBookingDaySQL =   "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK, TABLEID FROM BOOKINGS WHERE DAYOFWEEK = ?";
     String selectTotalDinersForDaySQL = "SELECT SUM(DINERS) FROM BOOKINGS WHERE DAYOFWEEK = ?";
     String selectUnoccupiedTablesSQL = "SELECT ID, SEATS FROM TABLES WHERE ID NOT IN (SELECT TABLEID FROM BOOKINGS WHERE DAYOFWEEK = ?)";
     String selectRestaurantCapacitySQL = "SELECT SUM(SEATS) FROM TABLES WHERE ID NOT IN (SELECT TABLEID FROM BOOKINGS WHERE DAYOFWEEK = ?)"; 
@@ -70,7 +70,7 @@ public class BookingQueries implements IBookingQueries {
     
     // Add booking to the database
     @Override
-    public void addBooking( String name, String phone, int reservation, String day ) {
+    public void addBooking( String name, String phone, int reservation, String day, int table ) {
         
         try {
             ps = connection.prepareStatement(insertNewBookingSQL);
@@ -78,6 +78,7 @@ public class BookingQueries implements IBookingQueries {
             ps.setString(2, phone);
             ps.setInt(3, reservation);
             ps.setString(4, day);
+            ps.setInt(5, table);
             ps.executeUpdate();
         }
         
@@ -118,8 +119,9 @@ public class BookingQueries implements IBookingQueries {
                 String phone = rs.getString("PHONE");
                 int diners = rs.getInt("DINERS");
                 String day = rs.getString("DAYOFWEEK");
+                int table = rs.getInt("TABLEID");
                 
-                Booking booking = new Booking(id, name, phone, diners, day);
+                Booking booking = new Booking(id, name, phone, diners, day, table);
                 
                 results.add(booking);
             }
@@ -151,8 +153,9 @@ public class BookingQueries implements IBookingQueries {
                 String phone = rs.getString("PHONE");
                 int diners = rs.getInt("DINERS");
                 String daySelected = rs.getString("DAYOFWEEK");
+                int table = rs.getInt("TABLEID");
                 
-                Booking booking = new Booking(id, name, phone, diners, daySelected);
+                Booking booking = new Booking(id, name, phone, diners, daySelected, table);
                 
                 results.add(booking);
             }
