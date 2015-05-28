@@ -44,8 +44,8 @@ public class BookingView extends JFrame implements IBookingView {
     JComboBox dayInput = new JComboBox(days);
     
     // Create ComboBox for table size
-    String[] sizes = {""};
-    JComboBox tableSizeInput = new JComboBox(sizes);
+    //String[] sizes = {""};
+    //JComboBox tableSizeInput = new JComboBox(sizes);
     
     // Create booking button
     JButton book = new JButton("Book");
@@ -88,7 +88,7 @@ public class BookingView extends JFrame implements IBookingView {
         JLabel phoneLabel = new JLabel("Phone:");
         JLabel dinersLabel = new JLabel("Diners:");
         JLabel dayLabel = new JLabel("Day:");
-        JLabel tableSizeLabel = new JLabel("Table Size:");
+        //JLabel tableSizeLabel = new JLabel("Table Size:");
         JLabel fill = new JLabel("");
         
         // Add content to westPanel
@@ -106,8 +106,8 @@ public class BookingView extends JFrame implements IBookingView {
             int today = calendar.get(Calendar.DAY_OF_WEEK);
             dayInput.setSelectedIndex(today - 1);
         
-        westPanel.add(tableSizeLabel);
-        westPanel.add(tableSizeInput);
+        //westPanel.add(tableSizeLabel);
+        //westPanel.add(tableSizeInput);
         westPanel.add(fill);
         westPanel.add(book);
         
@@ -290,13 +290,14 @@ public class BookingView extends JFrame implements IBookingView {
     
     @Override
     public String getTableSizeInput() {
-        return (String)tableSizeInput.getSelectedItem();
+        //return (String)tableSizeInput.getSelectedItem();
+        return null;
     }
     
     @Override
     public void setSizes(String[] s) {
-        sizes = null;
-        sizes = s;
+        //sizes = null;
+        //sizes = s;
     }
 
     @Override

@@ -66,16 +66,24 @@ public class BookingPresenter {
                 view.appendOutputDisplay(""+total);
             break;
                 
-            // Option for when it is attempted to add a booking when the there is not enough capacity for the booking    
+            // Option for when it is attempted to add a booking when the there is not any unoccupied tables    
             case 5:
-                message = String.format("There isn't enough seats for this booking on the selected day.\n");
+                message = String.format("There isn't any tables unoccupied on the selected day.\n");
                 view.appendOutputDisplay(message);
                 message = String.format("Please select another day.");
                 view.appendOutputDisplay(message);
             break;
             
-            // Option for when it is attempted to add a booking but there is a entry field empty    
+            // Option for when it is attempted to add a booking when the there is not enough capacity for the booking
             case 6:
+                message = String.format("There isn't enough seats for this booking on the selected day.\n");
+                view.appendOutputDisplay(message);
+                message = String.format("Please select another day.");
+                view.appendOutputDisplay(message);
+            break;    
+                
+            // Option for when it is attempted to add a booking but there is a entry field empty    
+            case 7:
                 message = String.format("A required field is empty.  Please fill the empty field/s.");
                 view.appendOutputDisplay(message);
             break;
@@ -89,7 +97,7 @@ public class BookingPresenter {
             if (view.getNameInput().equals("") || view.getPhoneInput().equals("")
                 || view.getDinersInput().equals("")) {
                 
-                option = 6;
+                option = 7;
                 updateOutputDisplay();
                 
                 int missingInput = 0;
@@ -127,48 +135,25 @@ public class BookingPresenter {
                 }
             }
             
-            // When there are no empty fields preceed to the next check
-            /*else {
-                int capacity = queries.getRestaurantCapacity();
-                total = queries.getTotalDinersForDay(view.getDayInput());
-            
-                // Check to see if there is space for the new booking and if so add the booking
-                if (total + Integer.parseInt(view.getDinersInput()) <= capacity) {
-                    queries.addBooking(view.getNameInput(), view.getPhoneInput(), 
-                                              Integer.parseInt(view.getDinersInput()), view.getDayInput());
-                    option = 1;
-                    updateOutputDisplay();
-                }
-            
-                // When there is no space on the selected day, suggest chosing another day and set focus to dayInput ComboBox
-                else {
+            else {
+                tableResults = queries.getUnoccupiedTables(view.getDayInput());
+                int size = tableResults.size();
+                
+                if (size <= 0) {
                     option = 5;
                     updateOutputDisplay();
                     view.dayInputRequestFocus();
-                }*/
-            
-            else {
-                tableResults = queries.getUnoccupiedTables(view.getDayInput());
-                
-                String header = String.format("TableID      Seats\n");
-                System.out.print(header);
-                for(int i = 0; tableResults.size() > i; i++) {
-                    Object line = tableResults.get(i);
-                    System.out.print(line.toString());
-                }
-                
-                if (tableResults == null) {
-                    // Error - no tables free.
                 }
                 
                 else {
                     
                     int capacity = queries.getRestaurantCapacity(view.getDayInput());
                     int diners = Integer.parseInt(view.getDinersInput());
-                    System.out.println(capacity);
                     
                     if (diners > capacity) {
-                        // Error - not enough space for this many diners. Suggest to choose another day.
+                        option = 6;
+                        updateOutputDisplay();
+                        view.dayInputRequestFocus();
                     }
                     
                     else {
@@ -199,9 +184,6 @@ public class BookingPresenter {
                         }
                     }
                 }
-                
-                
-            
             }
         }
     
