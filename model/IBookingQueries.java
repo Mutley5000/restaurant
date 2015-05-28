@@ -9,5 +9,5 @@ public interface IBookingQueries {
     LinkedList< Booking > getBookingsForDay(String day);
     int getRestaurantCapacity();
     int getTotalDinersForDay(String day);
-    boolean unoccupiedTables(String day);
+    LinkedList< Table > getUnoccupiedTables();
 }

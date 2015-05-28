@@ -12,6 +12,7 @@ public class BookingPresenter {
     IBookingView view;
     IBookingQueries queries;
     LinkedList<Booking> results;
+    LinkedList<Table> tableResults;
     int total;
     int option;
     
@@ -19,6 +20,7 @@ public class BookingPresenter {
         view = ibv;
         queries = ibq;
         results = null;
+        tableResults = null;
         total = 0;
         option = 0;
     }
@@ -126,7 +128,7 @@ public class BookingPresenter {
             }
             
             // When there are no empty fields preceed to the next check
-            else {
+            /*else {
                 int capacity = queries.getRestaurantCapacity();
                 total = queries.getTotalDinersForDay(view.getDayInput());
             
@@ -143,7 +145,18 @@ public class BookingPresenter {
                     option = 5;
                     updateOutputDisplay();
                     view.dayInputRequestFocus();
+                }*/
+            
+            else {
+                tableResults = queries.getUnoccupiedTables();
+                
+                String header = String.format("TableID      Seats\n");
+                System.out.print(header);
+                for(int i = 0; tableResults.size() > i; i++) {
+                    Object line = tableResults.get(i);
+                    System.out.print(line.toString());
                 }
+            
             }
         }
     

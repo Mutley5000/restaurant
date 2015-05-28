@@ -27,6 +27,7 @@ public class BookingQueries implements IBookingQueries {
                                 "FROM BOOKINGS";
     String selectBookingDaySQL =   "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK FROM BOOKINGS WHERE DAYOFWEEK = ?";
     String selectTotalDinersForDaySQL = "SELECT SUM(DINERS) FROM BOOKINGS WHERE DAYOFWEEK = ?";
+    String selectUnoccupiedTablesSQL = "SELECT ID, SEATS FROM TABLES WHERE OCCUPIED = 'NO'";
     
     // Create prepared statement
     PreparedStatement ps;
@@ -194,9 +195,30 @@ public class BookingQueries implements IBookingQueries {
     
     // Check if there are unoccupied tables
     @Override
-    public boolean unoccupiedTables( String day ) {
-        boolean unoccupied = false;
+    public LinkedList< Table > getUnoccupiedTables() {
         
-        return unoccupied;
+        LinkedList<Table> results = null;
+        ResultSet rs = null;
+        
+        try {
+            ps = connection.prepareStatement(selectUnoccupiedTablesSQL);
+            rs = ps.executeQuery();
+            results = new LinkedList<>();
+            
+            while (rs.next()) {
+                int id = rs.getInt("ID");
+                int seats = rs.getInt("SEATS");
+                
+                Table table = new Table(id, seats);
+                
+                results.add(table);
+            }
+        }
+        
+        catch ( SQLException err ) {
+            System.out.println( err.getMessage( ) );
+        }
+        
+        return results;
     }
 }
