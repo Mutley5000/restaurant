@@ -148,7 +148,7 @@ public class BookingPresenter {
                 }*/
             
             else {
-                tableResults = queries.getUnoccupiedTables();
+                tableResults = queries.getUnoccupiedTables(view.getDayInput());
                 
                 String header = String.format("TableID      Seats\n");
                 System.out.print(header);
@@ -158,12 +158,18 @@ public class BookingPresenter {
                 }
                 
                 if (tableResults == null) {
-                    
+                    // Error - no tables free.
                 }
                 
                 else {
+                    
                     int capacity = queries.getRestaurantCapacity();
                     System.out.println(capacity);
+                    total = queries.getTotalDinersForDay(view.getDayInput());
+                    
+                    if (total + Integer.parseInt(view.getDinersInput()) <= capacity) {
+                        
+                    }
                 }
                 
                 
