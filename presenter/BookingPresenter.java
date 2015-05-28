@@ -163,7 +163,7 @@ public class BookingPresenter {
                 
                 else {
                     
-                    int capacity = queries.getRestaurantCapacity();
+                    int capacity = queries.getRestaurantCapacity(view.getDayInput());
                     System.out.println(capacity);
                     total = queries.getTotalDinersForDay(view.getDayInput());
                     

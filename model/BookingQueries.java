@@ -28,7 +28,7 @@ public class BookingQueries implements IBookingQueries {
     String selectBookingDaySQL =   "SELECT ID, LASTNAME, PHONE, DINERS, DAYOFWEEK FROM BOOKINGS WHERE DAYOFWEEK = ?";
     String selectTotalDinersForDaySQL = "SELECT SUM(DINERS) FROM BOOKINGS WHERE DAYOFWEEK = ?";
     String selectUnoccupiedTablesSQL = "SELECT ID, SEATS FROM TABLES WHERE ID NOT IN (SELECT TABLEID FROM BOOKINGS WHERE DAYOFWEEK = ?)";
-    String selectRestaurantCapacitySQL = "SELECT SUM(SEATS) FROM TABLES WHERE OCCUPIED = 'NO'"; 
+    String selectRestaurantCapacitySQL = "SELECT SUM(SEATS) FROM TABLES WHERE ID NOT IN (SELECT TABLEID FROM BOOKINGS WHERE DAYOFWEEK = ?)"; 
     
     // Create prepared statement
     PreparedStatement ps;
@@ -167,12 +167,13 @@ public class BookingQueries implements IBookingQueries {
     
     // Get the restaurant capacity
     @Override
-    public int getRestaurantCapacity() {
+    public int getRestaurantCapacity(String day) {
         
         ResultSet rs = null;
         
         try {
             ps = connection.prepareStatement(selectRestaurantCapacitySQL);
+            ps.setString(1, day);
             rs = ps.executeQuery();
             
             while (rs.next()) {
