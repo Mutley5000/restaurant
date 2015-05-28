@@ -156,6 +156,17 @@ public class BookingPresenter {
                     Object line = tableResults.get(i);
                     System.out.print(line.toString());
                 }
+                
+                if (tableResults == null) {
+                    
+                }
+                
+                else {
+                    int capacity = queries.getRestaurantCapacity();
+                    System.out.println(capacity);
+                }
+                
+                
             
             }
         }
